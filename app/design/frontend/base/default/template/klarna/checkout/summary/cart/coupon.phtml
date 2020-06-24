@@ -1,0 +1,83 @@
+<?php
+/**
+ * Copyright 2018 Klarna Bank AB (publ)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category   Klarna
+ * @package    Klarna_Kco
+ * @author     Jason Grim <jason.grim@klarna.com>
+ */
+
+/**
+ * Klarna checkout coupon code template
+ */
+if (!$this->isEnabled()) {
+    return;
+}
+?>
+<?php $isApplied = strlen($this->getCouponCode()); ?>
+<div id="summary_coupon">
+    <?php if (!$isApplied): ?>
+        <div id="coupon-placeholder-checkout" class="text-center apply-wrapper">
+            <a class="apply"><?php echo $this->__('Click to apply coupon') ?></a>
+        </div>
+
+        <div id="coupon-form-checkout" style="display: none;">
+            <form id="checkout-coupon" action="<?php echo $this->getFormActionUrl(); ?>" method="post">
+                <div class="input-group">
+                    <input type="text" class="input-text form-control required-entry" id="coupon_code" name="coupon_code"
+                           autocomplete="off"
+                           value="<?php echo $this->escapeHtml($this->getCouponCode()) ?>"
+                           placeholder="<?php echo $this->__('Enter your coupon code.') ?>"/>
+                    <button type="submit" class="btn btn-info" value="<?php echo $this->__('Apply') ?>">
+                        <?php echo $this->__('Apply') ?>
+                    </button>
+                    <div id="coupon_advice_container"></div>
+                </div>
+            </form>
+
+            <script type="text/javascript">
+                //<![CDATA[
+                $('coupon-placeholder-checkout').observe('click', function (event) {
+                    $('coupon-placeholder-checkout').hide();
+                    $('coupon-form-checkout').show();
+                });
+                $('coupon_code').advaiceContainer = 'coupon_advice_container';
+                //]]>
+            </script>
+        </div>
+    <?php else: ?>
+        <div id="coupon-form-checkout">
+            <form id="checkout-coupon" action="<?php echo $this->getFormActionUrl(); ?>" method="post">
+                <input type="hidden" name="remove" id="remove-coupon" value="1"/>
+
+                <div class="input-group">
+                    <input type="text" class="input-text form-control" id="coupon_code" name="coupon_code" autocomplete="off"
+                           value="<?php echo $this->escapeHtml($this->getCouponCode()) ?>"
+                           disabled/>
+                    <button type="submit" class="btn btn-info coupon-remove" value="<?php echo $this->__('Remove') ?>">
+                        <?php echo $this->__('Remove') ?>
+                    </button>
+                </div>
+            </form>
+        </div>
+    <?php endif ?>
+</div>
+
+<script>
+    //<![CDATA[
+    var coupon = new Klarna.Form('checkout-coupon', '<?php echo $this->getFormActionUrl() ?>', true);
+    var couponForm = new VarienForm('checkout-coupon');
+    //]]>
+</script>

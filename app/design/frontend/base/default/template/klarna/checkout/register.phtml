@@ -1,0 +1,95 @@
+<?php
+/**
+ * Copyright 2018 Klarna Bank AB (publ)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category   Klarna
+ * @package    Klarna_Kco
+ * @author     Jason Grim <jason.grim@klarna.com>
+ */
+
+/**
+ * User registration on checkout
+ */
+?>
+<div class="col2-set login-only">
+    <div class="col-1">
+        <h3>
+            <?php echo $this->__('Register to Create an Account') ?>
+        </h3>
+        <p class="description"><strong><?php echo $this->__('Register and save time!') ?></strong><br />
+            <?php echo $this->__('Register with us for future convenience:') ?>
+        </p>
+        <ul>
+            <li><?php echo $this->__('Fast and easy check out') ?></li>
+            <li><?php echo $this->__('Easy access to your order history and status') ?></li>
+        </ul>
+        <ul class="form-list">
+            <li class="control">
+                <button id="onepage-guest-register-button" type="button" class="button" onclick="window.location='<?php echo $this->getRegistrationUrl();?>'"><span><span><?php echo $this->__('Register') ?></span></span></button>
+            </li>
+        </ul>
+    </div>
+    <div class="col-2">
+        <h3><?php echo $this->__('Returning Customers') ?></h3>
+        <?php echo $this->getMessagesBlock()->toHtml() ?>
+        <form id="login-form" action="<?php echo Mage::getUrl('customer/account/loginPost', array('_secure'=>true)); ?>" method="post">
+            <div class="fieldset">
+                <?php echo $this->getBlockHtml('formkey'); ?>
+                <p class="description"><?php echo $this->__('Sign in to speed up your checkout process') ?></p>
+                <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+                <ul class="form-list">
+                    <li>
+                        <label for="login-email" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                        <div class="input-box">
+                            <input type="email" autocapitalize="off" autocorrect="off" spellcheck="false" class="input-text required-entry validate-email" id="login-email" name="login[username]" />
+                        </div>
+                    </li>
+                    <li>
+                        <label for="login-password" class="required"><em>*</em><?php echo $this->__('Password') ?></label>
+                        <div class="input-box">
+                            <input type="password" class="input-text validate-password required-entry" id="login-password" name="login[password]" />
+                        </div>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->getUrl('customer/account/forgotpassword') ?>" class="f-left"><?php echo $this->__('Forgot your password?') ?></a>
+                    </li>
+                </ul>
+                <input name="context" type="hidden" value="checkout" />
+            </div>
+        </form>
+        <div class="buttons-set">
+            <button type="submit" class="button" onclick="kcoLogin(this)"><span><span><?php echo $this->__('Login') ?></span></span></button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    var loginForm = new VarienForm('login-form', true);
+    $('login-email').observe('keypress', bindLoginPost);
+    $('login-password').observe('keypress', bindLoginPost);
+    function bindLoginPost(evt){
+        if (evt.keyCode == Event.KEY_RETURN) {
+            loginForm.submit();
+        }
+    }
+    function kcoLogin(button)
+    {
+        if(loginForm.validator && loginForm.validator.validate()){
+            button.disabled = true;
+            loginForm.submit();
+        }
+    }
+    //]]>
+</script>

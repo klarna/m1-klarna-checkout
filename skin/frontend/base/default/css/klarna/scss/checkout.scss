@@ -1,0 +1,203 @@
+/**
+ * Copyright 2018 Klarna Bank AB (publ)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category   Klarna
+ * @package    Klarna_Kco
+ * @author     Jason Grim <jason.grim@klarna.com>
+ */
+
+/**
+ * Klarna checkout CSS
+ */
+
+$btn-bg-color: #3399cc;
+$btn-hvr-color: #2e8ab8;
+$btn-atv-color: #297aa3;
+
+#klarna-checkout-container {
+  width: 100%;
+}
+
+/* Sidebar */
+#checkout_summary {
+  & * {
+    text-transform: none;
+  }
+
+  & input[type=email],
+  input[type=search],
+  input[type=number],
+  input[type=password],
+  input[type=tel],
+  input[type=text] {
+    width: 100%;
+  }
+
+  & .text-center {
+    text-align: center;
+  }
+
+  & a.apply {
+    cursor: pointer;
+  }
+
+  & .checkout-summary-widget {
+    padding: .375rem 0;
+  }
+
+  & #summary_cart_table {
+    width: 100%;
+  }
+
+  & #summary_shipping {
+    ul.shipping-rates {
+      -webkit-column-count: 2; /* Chrome, Safari, Opera */
+      -moz-column-count: 2; /* Firefox */
+      column-count: 2;
+
+      -webkit-column-gap: .5rem; /* Chrome, Safari, Opera */
+      -moz-column-gap: .5rem; /* Firefox */
+      column-gap: .5rem;
+
+      & li {
+        padding: .125rem;
+      }
+    }
+  }
+
+  & #shopping-cart-totals-table {
+    border-spacing: 10px;
+    border-collapse: separate;
+  }
+
+  .input-group {
+    margin: 1em auto;
+    max-width: 25rem;
+    text-align: center;
+    padding: 0;
+
+    input {
+      display: inline-block;
+      height: 1.875rem;
+      padding: 0 .5rem;
+      border: .0625rem solid silver;
+      font-size: .9375rem;
+      width: calc(100% - 5rem);
+    }
+
+    button {
+      display: inline-block;
+      height: 1.875rem;
+      margin-left: -.375rem;
+      padding: .375rem .9375rem;
+      background: $btn-bg-color;
+      font-size: .8125rem;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      border: none;
+      vertical-align: top;
+
+      &:hover {
+        background: $btn-hvr-color;
+      }
+
+      &:active {
+        background: $btn-atv-color;
+      }
+    }
+  }
+}
+
+/* Checkout loading spinner */
+.klarna-loader {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  &:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  &:not(:required) {
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+    &:after {
+      content: '';
+      display: block;
+      font-size: 10px;
+      width: 1em;
+      height: 1em;
+      margin-top: -0.5em;
+      -webkit-animation: spinner 1500ms infinite linear;
+      -moz-animation: spinner 1500ms infinite linear;
+      -ms-animation: spinner 1500ms infinite linear;
+      -o-animation: spinner 1500ms infinite linear;
+      animation: spinner 1500ms infinite linear;
+      border-radius: 0.5em;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+      box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+    }
+  }
+}
+
+@mixin animation-spinner-keyframe() {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+/* Animation */
+@-webkit-keyframes spinner {
+  @include animation-spinner-keyframe();
+}
+
+@-moz-keyframes spinner {
+  @include animation-spinner-keyframe();
+}
+
+@-o-keyframes spinner {
+  @include animation-spinner-keyframe();
+}
+
+@keyframes spinner {
+  @include animation-spinner-keyframe();
+}

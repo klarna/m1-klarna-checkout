@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright 2018 Klarna Bank AB (publ)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category   Klarna
+ * @package    Klarna_KcoKred
+ * @author     Jason Grim <jason.grim@klarna.com>
+ */
+-->
+<config>
+    <modules>
+        <Klarna_KcoKred>
+            <version>2.2.2</version>
+        </Klarna_KcoKred>
+    </modules>
+    <global>
+        <models>
+            <klarna_kcokred>
+                <class>Klarna_KcoKred_Model</class>
+                <resourceModel>klarna_kcokred_resource</resourceModel>
+            </klarna_kcokred>
+            <klarna_kcokred_resource>
+                <class>Klarna_KcoKred_Model_Resource</class>
+                <entities>
+                    <push_queue>
+                        <table>klarna_kco_push_queue</table>
+                    </push_queue>
+                </entities>
+            </klarna_kcokred_resource>
+        </models>
+        <helpers>
+            <klarna_kcokred>
+                <class>Klarna_KcoKred_Helper</class>
+            </klarna_kcokred>
+        </helpers>
+        <resources>
+            <klarna_kcokred_setup>
+                <setup>
+                    <module>Klarna_KcoKred</module>
+                </setup>
+            </klarna_kcokred_setup>
+        </resources>
+        <events>
+            <kco_push_notification_order_not_found>
+                <observers>
+                    <klarna_kcokred_order_not_found_push_log>
+                        <type>singleton</type>
+                        <class>klarna_kcokred/observer</class>
+                        <method>logOrderPushNotification</method>
+                    </klarna_kcokred_order_not_found_push_log>
+                </observers>
+            </kco_push_notification_order_not_found>
+            <kco_push_notification_before>
+                <observers>
+                    <klarna_kcokred_order_found_push_log>
+                        <type>singleton</type>
+                        <class>klarna_kcokred/observer</class>
+                        <method>logOrderPushNotification</method>
+                    </klarna_kcokred_order_found_push_log>
+                </observers>
+            </kco_push_notification_before>
+            <log_log_clean_after>
+                <observers>
+                    <klarna_kcokred_push_queue_clean>
+                        <type>singleton</type>
+                        <class>klarna_kcokred/observer</class>
+                        <method>pushQueueCleanup</method>
+                    </klarna_kcokred_push_queue_clean>
+                </observers>
+            </log_log_clean_after>
+            <kco_payment_type_kred_can_capture_partial>
+                <observers>
+                    <klarna_kcokred_partial_payments>
+                        <type>singleton</type>
+                        <class>klarna_kcokred/observer</class>
+                        <method>disablePartialPaymentsForOrdersWithDiscounts</method>
+                    </klarna_kcokred_partial_payments>
+                </observers>
+            </kco_payment_type_kred_can_capture_partial>
+            <kco_payment_type_kred_can_refund_partial_per_invoice>
+                <observers>
+                    <klarna_kcokred_partial_payments>
+                        <type>singleton</type>
+                        <class>klarna_kcokred/observer</class>
+                        <method>disablePartialPaymentsForOrdersWithDiscounts</method>
+                    </klarna_kcokred_partial_payments>
+                </observers>
+            </kco_payment_type_kred_can_refund_partial_per_invoice>
+            <kco_request_generated_before>
+                <observers>
+                    <klarna_check_recurring_order>
+                        <type>singleton</type>
+                        <class>klarna_kcokred/observer</class>
+                        <method>beforeApiRequestGenerate</method>
+                    </klarna_check_recurring_order>
+                </observers>
+            </kco_request_generated_before>
+            <kco_request_generated_after>
+                <observers>
+                    <klarna_check_recurring_order>
+                        <type>singleton</type>
+                        <class>klarna_kcokred/observer</class>
+                        <method>requestUpdateForRecurringOrder</method>
+                    </klarna_check_recurring_order>
+                </observers>
+            </kco_request_generated_after>
+            <kco_confirmation_create_order_before>
+                <observers>
+                    <klarna_check_recurring_token>
+                        <type>singleton</type>
+                        <class>klarna_kcokred/observer</class>
+                        <method>requestUpdateForRecurringToken</method>
+                    </klarna_check_recurring_token>
+                </observers>
+            </kco_confirmation_create_order_before>
+        </events>
+    </global>
+    <frontend>
+        <events>
+            <kco_confirmation_create_order_success>
+                <observers>
+                    <acknowledge_kred_order_on_confirmation>
+                        <type>singleton</type>
+                        <class>klarna_kcokred/observer</class>
+                        <method>acknowledgeKredOrderOnConfirmation</method>
+                    </acknowledge_kred_order_on_confirmation>
+                </observers>
+            </kco_confirmation_create_order_success>
+        </events>
+    </frontend>
+    <klarna>
+        <api_types>
+            <kred>
+                <class>klarna_kcokred/api_kred</class>
+                <options>
+                    <payment_review>1</payment_review>
+                    <date_of_birth_mandatory_support>1</date_of_birth_mandatory_support>
+                    <phone_mandatory_support>1</phone_mandatory_support>
+                    <merchant_checkbox_support>1</merchant_checkbox_support>
+                    <national_identification_number_mandatory_support>1</national_identification_number_mandatory_support>
+                </options>
+            </kred>
+        </api_types>
+        <api_versions>
+            <nortic translate="label">
+                <label><![CDATA[v2 Nordics & DACH]]></label>
+                <type>kred</type>
+                <production_url><![CDATA[https://checkout.klarna.com]]></production_url>
+                <testdrive_url><![CDATA[https://checkout.testdrive.klarna.com]]></testdrive_url>
+            </nortic>
+        </api_versions>
+        <order_lines_kco>
+            <kred>
+                <items>
+                    <class>klarna_kcokred/checkout_orderline_items</class>
+                </items>
+                <discount>
+                    <class>klarna_kcokred/checkout_orderline_discount</class>
+                </discount>
+                <shipping>
+                    <class>klarna_kcokred/checkout_orderline_shipping</class>
+                </shipping>
+            </kred>
+        </order_lines_kco>
+    </klarna>
+    <crontab>
+        <jobs>
+            <recurringpaymentssample_charge>
+                <schedule>
+                    <config_path>payment/klarna_kco/recurring_profile_schedule</config_path>
+                </schedule>
+                <run>
+                    <model>klarna_kcokred/observer::processRecurringProfile</model>
+                </run>
+            </recurringpaymentssample_charge>
+        </jobs>
+    </crontab>
+</config>

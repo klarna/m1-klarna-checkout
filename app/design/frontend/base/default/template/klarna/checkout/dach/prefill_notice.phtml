@@ -1,0 +1,37 @@
+<?php
+/**
+ * Copyright 2016 Klarna AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category   Klarna
+ * @package    Klarna_KcoDACH
+ * @author     Jason Grim <jason.grim@klarna.com>
+ */
+
+/**
+ * Pre-fill notice
+ */
+?>
+<div class="klarna-pre-fill-notice" style="max-width: 640px;margin: 0 auto;padding: 0 12px;">
+    <p>
+        <button type="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Fill Address Details')); ?>" class="button" onclick="setLocation('<?php echo Mage::helper('core')->quoteEscape($this->getAcceptTermsUrl()); ?>')">
+            <span><span><?php echo $this->__('Fill Address Details'); ?></span></span>
+        </button>
+
+        <a href="javascript:;" onclick="$('notice_terms').toggle();"><?php echo $this->__('Apply the terms of use for data transmission'); ?></a>
+    </p>
+    <p id="notice_terms" style="display: none;padding: 12px">
+        <?php echo $this->__('We use Klarna Checkout as our checkout, which offers a simplified purchase experience. When you choose to go to the checkout, your email address, first name, last name, date of birth, address and phone number may be automatically transferred to Klarna AB, enabling the provision of Klarna Checkout. <a href="%s" target="_blank">These User Terms</a> apply for the use of Klarna Checkout.', $this->getUserTermsUrl()); ?>
+    </p>
+</div>

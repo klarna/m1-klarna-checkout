@@ -1,0 +1,79 @@
+<?php
+/**
+ * Copyright 2018 Klarna Bank AB (publ)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category   Klarna
+ * @package    Klarna_Kco
+ * @author     Jason Grim <jason.grim@klarna.com>
+ */
+
+/**
+ * Klarna gift message template
+ */
+?>
+<div class="gift-messages">
+    <input type="checkbox" class="checkbox" name="allow_gift_messages" id="allow_gift_messages" value="1"<?php if($this->getEntityHasMessage()): ?> checked="checked"<?php endif ?> />
+    <label for="allow_gift_messages"><?php echo $this->__('Add a gift message to my order') ?></label>
+</div>
+<form id="checkout-gift-message" action="<?php echo $this->getFormActionUrl() ?>" method="post">
+    <div class="gift-messages-form" id="allow-gift-message-container"<?php if(!$this->getEntityHasMessage()): ?> style="display:none"<?php endif; ?>>
+        <div class="inner-box">
+            <?php if (Mage::helper('giftmessage/message')->isMessagesAvailable('quote', $this->getEntity())): ?>
+                <fieldset class="group-select">
+                    <input type="hidden" name="giftmessage[<?php echo $this->getEntity()->getId() ?>][type]"  value="quote" />
+                    <ul class="form-list">
+                        <li class="fields">
+                            <div class="field">
+                                <label for="gift-message-whole-from"><?php echo $this->__('From') ?></label><br />
+                                <input type="text" name="giftmessage[<?php echo $this->getEntity()->getId() ?>][from]" id="gift-message-whole-from" title="<?php echo $this->__('From') ?>"  value="<?php echo $this->getEscaped($this->getMessage()->getSender(), $this->getDefaultFrom()) ?>" class="klarna_input-text input-text validation-passed" />
+                            </div>
+                            <div class="field">
+                                <label for="gift-message-whole-to"><?php echo $this->__('To') ?></label><br />
+                                <input type="text" name="giftmessage[<?php echo $this->getEntity()->getId() ?>][to]" id="gift-message-whole-to" title="<?php echo $this->__('To') ?>" value="<?php echo $this->getEscaped($this->getMessage()->getRecipient(), $this->getDefaultTo()) ?>" class="klarna_input-text input-text validation-passed" />
+                            </div>
+                        </li>
+                        <li class="wide">
+                            <label for="gift-message-whole-message"><?php echo $this->__('Message') ?></label>
+                            <br/>
+                            <textarea id="gift-message-whole-message" class="klarna_input-text input-text validation-passed giftmessage-area" name="giftmessage[<?php echo $this->getEntity()->getId() ?>][message]" title="<?php echo $this->__('Message') ?>" rows="5" cols="40"><?php echo $this->getEscaped($this->getMessage()->getMessage()) ?></textarea>
+                        </li>
+                    </ul>
+                </fieldset>
+                <button type="submit" id="save_gift_message" class="button button-small button-action" value="<?php echo $this->__('Save Message') ?>"><?php echo $this->__('Save Message') ?></button>
+            <?php endif; ?>
+        </div>
+    </div>
+</form>
+
+<script>
+    //<![CDATA[
+    var giftMessageForm = new VarienForm('checkout-gift-message');
+
+    $('allow_gift_messages').observe('click', function (e) {
+        var element = e.element();
+        if (element.checked) {
+            $('allow-gift-message-container').show();
+        } else {
+            $('allow-gift-message-container').hide();
+            var message = $('gift-message-whole-message');
+            if (message.value.length > 0) {
+                message.clear();
+                giftMessage.save();
+            }
+        }
+    });
+    //]]>
+</script>
+

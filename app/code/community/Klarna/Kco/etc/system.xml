@@ -1,0 +1,511 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright 2018 Klarna Bank AB (publ)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category   Klarna
+ * @package    Klarna_Kco
+ * @author     Jason Grim <jason.grim@klarna.com>
+ */
+-->
+<config>
+    <sections>
+        <payment>
+            <groups>
+                <klarna_kco translate="label" module="klarna_kco">
+                    <label>Klarna Checkout</label>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>1</sort_order>
+                            <comment>
+                                <model>klarna_kco/adminhtml_comment</model>
+                            </comment>
+                        </title>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>2</sort_order>
+                        </active>
+                        <api_version translate="label">
+                            <label>API Version</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>klarna_kco/system_config_source_version</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>3</sort_order>
+                        </api_version>
+                        <merchant_id translate="label">
+                            <label>Merchant ID</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>5</sort_order>
+                        </merchant_id>
+                        <shared_secret translate="label">
+                            <label>Shared secret</label>
+                            <frontend_type>obscure</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>10</sort_order>
+                        </shared_secret>
+                        <test_mode translate="label">
+                            <label>Test Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>15</sort_order>
+                        </test_mode>
+                        <debug translate="label comment">
+                            <label>Debug Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>20</sort_order>
+                            <comment>Should not be enabled in production. Sensitive information is logged.</comment>
+                        </debug>
+                        <order_status translate="label">
+                            <label>New order status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>25</sort_order>
+                        </order_status>
+                        <allowspecific translate="label comment">
+                            <label>Payment from applicable countries</label>
+                            <frontend_type>allowspecific</frontend_type>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>30</sort_order>
+                            <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Payment from Specific countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>35</sort_order>
+                        </specificcountry>
+                        <shipping_countries translate="label comment">
+                            <label>Shipping Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>40</sort_order>
+                            <comment>Supported shipping countries for Klarna.</comment>
+                        </shipping_countries>
+                        <disable_customer_group translate="label comment">
+                            <label>Disable Klarna for specific customer groups</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>klarna_kco/system_config_source_customergroup</source_model>
+                            <backend_model>klarna_kco/system_config_backend_multiselect</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>45</sort_order>
+                            <comment>Selected groups will see standard checkout instead of Klarna checkout.</comment>
+                        </disable_customer_group>
+                        <external_payment_methods translate="label comment">
+                            <label>External Payment Methods</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>klarna_kco/system_config_source_externalmethods</source_model>
+                            <backend_model>klarna_kco/system_config_backend_multiselect</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>50</sort_order>
+                            <comment>Displayed when Klarna’s standard offering is not approved for the customer.</comment>
+                        </external_payment_methods>
+                        <strip_postal_code translate="label comment">
+                            <label>Strip Zip/Post Code</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>55</sort_order>
+                            <comment>Strips the last four digits from ZIP+4 codes. Recommended for tax rules using specific zip code. NOTE: US only.</comment>
+                        </strip_postal_code>
+                        <recurring_profile_schedule translate="label comment">
+                            <label>Cron schedule for process recurring profile</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>60</sort_order>
+                            <comment>Use Crontab Format (Eg. "*/5 * * * *" for every 5 minutes)</comment>
+                        </recurring_profile_schedule>
+                    </fields>
+                </klarna_kco>
+            </groups>
+        </payment>
+        <checkout>
+            <groups>
+                <klarna_kco translate="label">
+                    <label>Klarna Checkout Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <merchant_checkbox translate="label comment">
+                            <label>Merchant Checkbox</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>klarna_kco/system_config_source_merchantcheckbox</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>2</sort_order>
+                            <comment>Enable a checkbox within the checkout to trigger user behavior. May not available in all markets.</comment>
+                        </merchant_checkbox>
+                        <merchant_checkbox_text translate="label comment">
+                            <label>Merchant Checkbox Text</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>3</sort_order>
+                            <comment>Leave blank to use default text with selected method.</comment>
+                        </merchant_checkbox_text>
+                        <merchant_checkbox_required translate="label comment">
+                            <label>Merchant Checkbox Required</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>4</sort_order>
+                            <comment>If the checkbox must be checked before the customer can place the order.</comment>
+                        </merchant_checkbox_required>
+                        <merchant_checkbox_checked translate="label comment">
+                            <label>Merchant Checkbox Checked</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>5</sort_order>
+                            <comment>If the checkbox will be checked by default.</comment>
+                        </merchant_checkbox_checked>
+                        <guest_checkout translate="label">
+                            <label>Allow Guest Checkout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>6</sort_order>
+                        </guest_checkout>
+                        <terms_url translate="label">
+                            <label>URL to terms and conditions</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>10</sort_order>
+                            <validate>required-entry</validate>
+                            <comment>URL to this stores own terms and conditions.</comment>
+                        </terms_url>
+                        <separate_address translate="label comment">
+                            <label>Separate shipping addresses</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_store>0</show_in_store>
+                            <show_in_website>1</show_in_website>
+                            <sort_order>20</sort_order>
+                            <comment>Allow shipping address to be different from billing address.</comment>
+                        </separate_address>
+                        <packstation_enabled translate="label comment">
+                            <label>Packstation Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>1</sort_order>
+                            <comment>Only available in certain markets. Hint: If set to true it forces the value of the Klarna configuration "Separate shipping addresses" to "Enable" </comment>
+                            <sort_order>23</sort_order>
+                        </packstation_enabled>
+                        <auto_focus translate="label">
+                            <label>Auto focus Klarna Checkout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>25</sort_order>
+                        </auto_focus>
+                        <merchant_prefill translate="label comment">
+                            <label>Pre-fill Customer Details</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>30</sort_order>
+                            <comment>Pre-fill Klarna Checkout with stored customer data.</comment>
+                        </merchant_prefill>
+                        <prefill_notice translate="label comment">
+                            <label>Customer pre-fill notice Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>35</sort_order>
+                            <comment>Display a pre-fill notice to registered customer before submitting details to Klarna. The customer must accept the notice before continuing checkout.</comment>
+                        </prefill_notice>
+                        <title_mandatory translate="label comment">
+                            <label>Title mandatory</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>40</sort_order>
+                            <comment>Only available in certain markets.</comment>
+                        </title_mandatory>
+                        <dob_mandatory translate="label comment">
+                            <label>Date of birth mandatory</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>45</sort_order>
+                            <comment>Only available in certain markets.</comment>
+                        </dob_mandatory>
+                        <phone_mandatory translate="label comment">
+                            <label>Telephone number mandatory</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>50</sort_order>
+                            <comment>Only available in certain markets.</comment>
+                        </phone_mandatory>
+                        <national_identification_number_mandatory translate="label comment">
+                            <label>National identification number mandatory</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>55</sort_order>
+                            <comment>Only available in certain markets.</comment>
+                        </national_identification_number_mandatory>
+                        <enable_b2b translate="label comment">
+                            <label>Enable B2B mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>100</sort_order>
+                            <comment>Enable B2B checkout mode (Not available in all Markets. Must be setup in your contract with Klarna)</comment>
+                        </enable_b2b>
+                        <business_id_attribute translate="label comment">
+                            <label>Business ID attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>klarna_kco/system_config_source_customattributes</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>105</sort_order>
+                            <comment>Custom attribute for business id</comment>
+                            <depends>
+                                <enable_b2b>1</enable_b2b>
+                            </depends>
+                        </business_id_attribute>
+                        <custom_checkboxes translate="label comment">
+                            <label>Custom Checkboxes</label>
+                            <frontend_model>klarna_kco/admin_system_config_checkout_customcheckboxes</frontend_model>
+                            <backend_model>klarna_kco/system_config_backend_jsonencoded_array</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>106</sort_order>
+                            <comment>Add multiple additional custom checkboxes to Klarna Checkout.</comment>
+                        </custom_checkboxes>
+                    </fields>
+                </klarna_kco>
+                <klarna_kco_shipping translate="label">
+                    <label>Klarna Checkout Shipping Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>101</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <weight_unit translate="label comment">
+                            <label>Product weight unit</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>klarna_kco/system_config_source_weightunit</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>106</sort_order>
+                            <comment>Defines which unit will be used for the product weights</comment>
+                        </weight_unit>
+                        <product_size_unit translate="label comment">
+                            <label>Product size unit</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>klarna_kco/system_config_source_productunit</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>106</sort_order>
+                            <comment>Defines which unit will be used for the product size</comment>
+                        </product_size_unit>
+                        <product_length_attribute translate="label comment">
+                            <label>Product length attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>klarna_kco/system_config_source_customproductattributes</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>105</sort_order>
+                            <comment>Custom attribute for the product length attribute</comment>
+                        </product_length_attribute>
+                        <product_width_attribute translate="label comment">
+                            <label>Product width attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>klarna_kco/system_config_source_customproductattributes</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>105</sort_order>
+                            <comment>Custom attribute for the product width attribute</comment>
+                        </product_width_attribute>
+                        <product_height_attribute translate="label comment">
+                            <label>Product height attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>klarna_kco/system_config_source_customproductattributes</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>105</sort_order>
+                            <comment>Custom attribute for the product height attribute</comment>
+                        </product_height_attribute>
+                    </fields>
+                </klarna_kco_shipping>
+                <klarna_kco_design translate="label">
+                    <label>Klarna Checkout Design</label>
+                    <frontend_type>text</frontend_type>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <sort_order>102</sort_order>
+                    <fields>
+                        <color_button translate="label comment">
+                            <label>Checkout button color</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>1</sort_order>
+                            <comment>Example: #0072CC</comment>
+                        </color_button>
+                        <color_button_text translate="label comment">
+                            <label>Checkout button text color</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>2</sort_order>
+                            <comment>Example: #0072CC</comment>
+                        </color_button_text>
+                        <color_checkbox translate="label comment">
+                            <label>Checkout checkbox color</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>3</sort_order>
+                            <comment>Example: #0072CC</comment>
+                        </color_checkbox>
+                        <color_checkbox_checkmark translate="label comment">
+                            <label>Checkout checkbox check mark color</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>4</sort_order>
+                            <comment>Example: #0072CC</comment>
+                        </color_checkbox_checkmark>
+                        <color_header translate="label comment">
+                            <label>Checkout header color</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>5</sort_order>
+                            <comment>Example: #0072CC</comment>
+                        </color_header>
+                        <color_link translate="label comment">
+                            <label>Checkout link color</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>6</sort_order>
+                            <comment>Example: #0072CC</comment>
+                        </color_link>
+                        <radius_border translate="label comment">
+                            <label>Checkout border radius</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>7</sort_order>
+                            <comment>Example: 0px</comment>
+                        </radius_border>
+                    </fields>
+                </klarna_kco_design>
+            </groups>
+        </checkout>
+    </sections>
+</config>

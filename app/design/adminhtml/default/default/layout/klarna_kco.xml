@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright 2018 Klarna Bank AB (publ)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category   Klarna
+ * @package    Klarna_Kco
+ * @author     Jason Grim <jason.grim@klarna.com>
+ * @author     Marcin Dancewicz <marcin.dancewicz@klarna.com>
+ */
+-->
+<layout>
+    <adminhtml_klarna_index>
+        <label>Admin Klarna Checkout</label>
+        <reference name="content">
+            <block type="klarna_kco/admin_checkout" name="checkout.kco" template="klarna/checkout.phtml"/>
+        </reference>
+    </adminhtml_klarna_index>
+
+    <adminhtml_klarna_success>
+        <label>Admin Klarna Checkout Success</label>
+        <reference name="content">
+            <block type="klarna_kco/admin_success" name="checkout.success" template="klarna/success.phtml"/>
+        </reference>
+    </adminhtml_klarna_success>
+</layout>

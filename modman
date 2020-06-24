@@ -1,0 +1,13 @@
+app/code/community/Klarna/Kco
+app/code/community/Klarna/KcoKred
+app/design/adminhtml/default/default/template/klarna
+app/design/adminhtml/default/default/layout/klarna_kco.xml
+app/design/frontend/base/default/layout/klarna_kco.xml
+app/design/frontend/base/default/template/klarna
+app/etc/modules/Klarna_Kco.xml
+app/etc/modules/Klarna_KcoKred.xml
+app/locale/en_US/Klarna_Kco.csv
+js/klarna/checkout.js
+lib/Klarna/
+skin/frontend/base/default/css/klarna/checkout.css
+skin/frontend/base/default/css/klarna/scss/checkout.scss
